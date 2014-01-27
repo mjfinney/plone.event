@@ -7,6 +7,11 @@ from plone.event.utils import tzdel
 from plone.event.utils import utc
 from plone.event.utils import utcoffset_normalize
 
+try:
+    from archetypes.recurringdate.recurrence import RecurringData
+except ImportError:
+    RecurringData = None
+
 import datetime
 import re
 
@@ -68,6 +73,8 @@ def recurrence_sequence_ical(start, recrule=None,
     else:
         duration = datetime.timedelta(0)
 
+    if type(recrule) is RecurringData:
+        recrule = None
     if recrule:
         # TODO BUGFIX WRONG TIME DEFINITIONS
         # THIS HACK ensures, that UNTIL, RDATE and EXDATE definitions with
